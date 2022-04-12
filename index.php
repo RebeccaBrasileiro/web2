@@ -1,36 +1,47 @@
 <?php
-   //auto load
-   spl_autoload_extensions('.php');
-   function classLoader($class)
-    {
-       $nomeArquivo = $class . '.php';
-       $pastas = array('controller','model');
-       foreach ($pastas as $pastas){
-           $arquivo = "{$pastas}/{$nomeArquivo}";
-           if (file_exists($arquivo)) {
-               require_once($arquivo);
-           }
-           
-       }
+// auto load
+spl_autoload_extensions('.php');
+function classLoader($class)
+{
+  $pastas = array('controller', 'model');
+  foreach ($pastas as $pasta) {
+    $arquivo = "{$pasta}/{$class}.php";
+    if (file_exists($arquivo)) {
+      require_once($arquivo);
     }
-    spl_autoload_register('classLoader');
-
-    //Front Controller
-
-    class Aplicacao
-    {
-        public static function run ()
-        {
-            $layout = new Template('view/layout.html');
-            $class = "Inicio";
-            if(class_exists($class)){
-                $pagina = new $class();
-                $conteudo = $pagina->controller();
-                $layout->set('conteudo', $conteudo);
-            }
-            echo $layout->saida();
-        }
+  }
+}
+spl_autoload_register("classLoader");
+// Front Controller
+class Aplicacao
+{
+  static private $app = ["/rebecca", "/rebecca/index.php"];
+  public static function run()
+  {
+    $layout = new Template('view/layout.html');
+    $route = new Route(self::$app);
+    $class = $route->getClassName();
+    $method = $route->getMethodName();
+    if (isset($_GET["class"])) {
+      $class = $_GET["class"];
     }
-    Aplicacao::run();
-
-?>
+    if (isset($_GET["method"])) {
+      $method = $_GET["method"];
+    }
+    if (empty($class)) {
+      $class = "Inicio";
+    }
+    if (class_exists($class)) {
+      $pagina = new $class();
+      if (method_exists($pagina, $method)) {
+        $pagina->$method();
+      } else {
+        $pagina->controller();
+      }
+      $layout->set('uri', self::$app[0]);
+      $layout->set('conteudo', $pagina->getMessage());
+    }
+    echo $layout->saida();
+  }
+}
+Aplicacao::run();

@@ -1,11 +1,15 @@
 <?php
-
-   class Inicio
-   {
-       public function controller()
-       {
-         $inicio = new Template('view/inicio.html');
-         $inicio->set('inicio','Olá seja bem vindo!!!');
-         return $inicio->saida();
-       }
-   }
+class Inicio
+{
+  private $message = "";
+  public function controller()
+  {
+    $inicio = new Template('view/inicio.html');
+    $inicio->set('inicio', 'Olá seja bem vindo!!!');
+    $this->message = $inicio->saida();
+  }
+  public function getMessage()
+  {
+    return $this->message;
+  }
+}
