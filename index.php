@@ -15,13 +15,12 @@ spl_autoload_register("classLoader");
 // Front Controller
 class Aplicacao
 {
-  static private $app = ["/rebecca", "/rebecca/index.php"];
+  static private $app = "/rebecca";
   public static function run()
   {
     $layout = new Template('view/layout.html');
-    $route = new Route(self::$app);
-    $class = $route->getClassName();
-    $method = $route->getMethodName();
+    $method = "";
+
     if (isset($_GET["class"])) {
       $class = $_GET["class"];
     }
@@ -30,6 +29,7 @@ class Aplicacao
     }
     if (empty($class)) {
       $class = "Inicio";
+      $method = "";
     }
     if (class_exists($class)) {
       $pagina = new $class();
@@ -38,7 +38,7 @@ class Aplicacao
       } else {
         $pagina->controller();
       }
-      $layout->set('uri', self::$app[0]);
+      $layout->set('uri', self::$app);
       $layout->set('conteudo', $pagina->getMessage());
     }
     echo $layout->saida();
