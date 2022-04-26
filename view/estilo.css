@@ -19,7 +19,7 @@ body{
 }
 
 nav{
-    background-color: darkgray;
+    background-color:rgb(247, 186, 186);
     width: 100%;
     height: 80px;
     padding: 0 20px;
@@ -27,7 +27,7 @@ nav{
 }
 
 nav a {
-    color: #333;
+    color:#000;
     text-decoration: none;
     font-size: 18px;
     padding: 20px;
@@ -45,11 +45,18 @@ nav ul >li {
     font-size: 20px;
     cursor: pointer;
 }
-
+table {
+    border-collapse: collapse;
+  }
+  table thead tr th,
+  table tbody tr td {
+    border: 1px solid black;
+    padding: 0.5rem;
+  }
 footer{
     position: fixed;
     bottom: 0;
-    background-color: darkgray;
+    background-color:rgb(247, 186, 186);;
     width: 100%;
     height: 80px;
     padding: 0 20px;
