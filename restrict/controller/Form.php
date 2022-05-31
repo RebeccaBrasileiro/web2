@@ -9,7 +9,7 @@ class Form
   }
   public function controller()
   {
-    $form = new Template("view/form.html");
+    $form = new Template("restrict/view/form.html");
     $form->set("id", "");
     $form->set("nome", "");
     $form->set("mensagem", "");
@@ -24,8 +24,6 @@ class Form
         $mural = new Crud("mural");
         $nome = $conexao->quote($_POST["nome"]);
         $mensagem = $conexao->quote($_POST["mensagem"]);
-        $datahora = $conexao->quote($_POST["datahora"]);
-        $resultado = $mural->insert("nome, mensagem, datahora", "$nome, $mensagem, $datahora");
         $datahora = $conexao->quote($_POST["datahora"]);
         if (empty($_POST["id"])) {
           $mural->insert(
@@ -58,7 +56,7 @@ class Form
         $mural = new Crud("mural");
         $resultado = $mural->select("*", "id = $id");
         if (!$mural->getError()) {
-        $form = new Template("view/form.html");
+        $form = new Template("restrict/view/form.html");
         foreach ($resultado[0] as $cod => $valor) {
           $form->set($cod, $valor);
         }
@@ -78,7 +76,7 @@ public function getMessage()
   if (is_string($this->error)) {
     return $this->message;
   } else {
-    $msg = new Template("view/msg.html");
+    $msg = new Template("shared/view/msg.html");
     if ($this->error) {
       $msg->set("cor", "danger");
     } else {
